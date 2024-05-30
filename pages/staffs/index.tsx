@@ -1,27 +1,49 @@
-import { getToken } from "@/helper/getToken";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import axios from "@/ulti/axios";
+import Staff from "@/components/Staff";
 
-const Staffs = () => {
+const Staffs: React.FC = () => {
+  const [staffs, setStaffs] = useState<Staff[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  console.log(staffs);
+
   useEffect(() => {
-    const token = getToken();
-    console.log(token);
+    const fetchStaffs = async () => {
+      try {
+        const response = await axios.get<Staff[]>("/staff/?isOnlyActive=true");
+        setStaffs(response.data);
+      } catch (error) {
+        if (error) {
+          setError("Error");
+        } else {
+          setError("An unexpected error occurred");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStaffs();
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error fetching data: {error}</div>;
+  }
+
   return (
-    <div className="mt-20 w-[80%] mx-auto">
-      <div
-        className={`lg:p-4 bg-white border-2 rounded-lg shadow-md py-2 mx-5 flex flex-col justify-center items-center cursor-pointer max-w-[200px]`}
-      >
-        <div className="text-base xs:text-sm  font-semibold flex flex-col justify-center gap-2 mb-2 items-center">
-          <AccountCircleIcon />
-          Staff name
-        </div>
-        <div className="text-gray-600 mb-4 text-base flex justify-center flex-col-1 gap-x-2">
-          <div>Nickname: </div>
-          <div> Nickname </div>
-        </div>
+    <div className="mt-20 xl:w-[90%] 2xl:w-[80%] mx-auto">
+      <div className="grid 2xl:grid-cols-5 xl:grid-cols-4 md:grid-cols-3 grid-cols-2 ">
+        {staffs.map((staff) => (
+          <Staff key={staff.id} staff={staff} />
+        ))}
       </div>
     </div>
   );
 };
+
 export default Staffs;

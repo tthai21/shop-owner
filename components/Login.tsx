@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import ForgotPasswordDialog from "./ForgotPasswordDialog";
 import axios from "@/ulti/axios";
 import { useRouter } from "next/router";
+import { Spinner } from "@radix-ui/themes";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("me5@gmail.com");
   const [password, setPassword] = useState<string>("123456");
+  const [error, setError] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -14,7 +17,7 @@ const Login: React.FC = () => {
       email: email,
       password: password,
     };
-
+    setLoading(true);
     try {
       const response = await axios.post("/auth/authenticate", payload, {
         headers: {
@@ -26,14 +29,16 @@ const Login: React.FC = () => {
         const token = response.data.token;
         sessionStorage.setItem("authToken", token);
         console.log("Token saved to session storage:", token);
-        router.push("/admin");
+        router.push("/staffs");
         setEmail("");
         setPassword("");
       } else {
         throw new Error("Failed to submit booking.");
       }
+      setLoading(false);
     } catch (error) {
-      console.error("Error submitting booking:", error);
+      setError(error);
+      setLoading(false);
     }
   };
 
@@ -78,12 +83,15 @@ const Login: React.FC = () => {
                 required
               />
             </div>
+            <div className={`mb-4 text-red-700 ${!error && "hidden"} `}>
+              Email or password invalid
+            </div>
             <div className="flex items-center justify-between">
               <button
                 type="submit"
-                className="w-full bg-slate-900 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="w-full flex justify-center items-center h-[40px] bg-slate-900 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               >
-                Login
+                {loading ? <Spinner size={"3"}/> : "Login"}
               </button>
             </div>
             <div className="mt-5 cursor-pointer">
