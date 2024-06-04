@@ -3,16 +3,26 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import SwitchActive from "./SwitchActive";
 import axios from "@/ulti/axios";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { StaffField } from "./EditStaff";
 import { getToken } from "@/helper/getToken";
 
-interface EditStaffProps {
-  staff: Staff;
+interface AppProps {
   onUpdate: () => void;
 }
 
-const EditStaff: React.FC<EditStaffProps> = ({ staff ,onUpdate}) => {
-  const [formData, setFormData] = useState<Staff>({ ...staff });
+const CreateStaff: React.FC<AppProps> = ({ onUpdate }) => {
+  const [formData, setFormData] = useState<Staff>({
+    id: "",
+    firstName: "Trong",
+    lastName: "Thai",
+    nickname: "Alex",
+    phone: "56745737",
+    skillLevel: "1",
+    dateOfBirth: "06/12/1987",
+    rate: "1",
+    workingDays: "1,2,3",
+    isActive: true,
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -21,10 +31,12 @@ const EditStaff: React.FC<EditStaffProps> = ({ staff ,onUpdate}) => {
 
   const handleSwitchChange = (isActive: boolean) => {
     setFormData({ ...formData, isActive });
+    console.log(formData);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     try {
       const response = await axios.post("/staff/", formData, {
         headers: {
@@ -33,8 +45,9 @@ const EditStaff: React.FC<EditStaffProps> = ({ staff ,onUpdate}) => {
           Authorization: `Bearer ${getToken()}`,
         },
       });
+      console.log("success");
       console.log(response.data);
-      onUpdate()
+      onUpdate();
 
       if (response.status !== 201) {
         throw new Error("Failed to submit booking.");
@@ -43,22 +56,11 @@ const EditStaff: React.FC<EditStaffProps> = ({ staff ,onUpdate}) => {
       console.error("Error submitting booking:", error);
     }
   };
-
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <div
-          key={staff.id}
-          className="sm:p-4 mb-10 bg-white border-2 rounded-lg shadow-md py-2 flex flex-col justify-center items-center w-[160px] sm:w-[200px] cursor-pointer mx-auto "
-        >
-          <div className="text-base xs:text-sm font-semibold flex flex-col justify-center gap-2 mb-2 items-center">
-            <AccountCircleIcon />
-            {staff.firstName}
-          </div>
-          <div className="text-gray-600 mb-4 px-8 text-base flex flex-col items-center justify-center  gap-x-2">
-            <div>Nickname: </div>
-            <div>{staff.nickname}</div>
-          </div>
+        <div className="px-5 py-3 lg:p-4 mb-10 bg-white border-2 rounded-lg shadow-md font-bold  mx-5 flex flex-col justify-center items-center max-w-[200px]">
+          Add Staff
         </div>
       </Dialog.Trigger>
       <Dialog.Portal>
@@ -119,12 +121,12 @@ const EditStaff: React.FC<EditStaffProps> = ({ staff ,onUpdate}) => {
             />
             <div className="mt-[25px] flex justify-end">
               {/* <Dialog.Close asChild> */}
-                <button
-                  type="submit"
-                  className="bg-blue-700 text-white hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-md px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
-                >
-                  Save changes
-                </button>
+              <button
+                type="submit"
+                className="bg-blue-700 text-white hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-md px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
+              >
+                Add Staff
+              </button>
               {/* </Dialog.Close> */}
             </div>
           </form>
@@ -142,36 +144,4 @@ const EditStaff: React.FC<EditStaffProps> = ({ staff ,onUpdate}) => {
   );
 };
 
-export default EditStaff;
-
-interface StaffFieldProps {
-  value: any;
-  fieldName: string;
-  htmlFor: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-export const StaffField: React.FC<StaffFieldProps> = ({
-  value,
-  fieldName,
-  htmlFor,
-  onChange,
-}) => {
-  return (
-    <fieldset className="mb-[15px] flex items-center gap-5">
-      <label
-        className="text-violet11 w-[90px] text-right text-[15px]"
-        htmlFor={htmlFor}
-      >
-        {fieldName}
-      </label>
-      <input
-        className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-        id={htmlFor}
-        name={htmlFor}
-        defaultValue={value}
-        onChange={onChange}
-      />
-    </fieldset>
-  );
-};
+export default CreateStaff;

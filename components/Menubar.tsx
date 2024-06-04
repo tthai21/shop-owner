@@ -6,7 +6,7 @@ const MenubarDemo = () => {
   const router = useRouter();
   const slug = router.route;
   return (
-    <Menubar.Root className="flex bg-white p-[3px] mt-5 w-[70%] lg:w-[50%] mx-auto justify-center  rounded-md shadow-[0_2px_10px] shadow-blackA4">
+    <Menubar.Root className="flex bg-white p-[3px] mt-5 w-[90%] sx:w-[70%] lg:w-[50%] mx-auto justify-center  rounded-md shadow-[0_2px_10px] shadow-blackA4">
       <Menubar.Menu>
         <Menubar.Trigger
           onClick={() => router.push("/staffs")}

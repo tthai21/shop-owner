@@ -5,8 +5,8 @@ import { useRouter } from "next/router";
 import { Spinner } from "@radix-ui/themes";
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState<string>("me5@gmail.com");
-  const [password, setPassword] = useState<string>("123456");
+  const [email, setEmail] = useState<string>("cosynails@gmail.com");
+  const [password, setPassword] = useState<string>("cosynails@gmail.com");
   const [error, setError] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -22,6 +22,7 @@ const Login: React.FC = () => {
       const response = await axios.post("/auth/authenticate", payload, {
         headers: {
           "Content-Type": "application/json",
+          "X-StoreID": process.env.NEXT_PUBLIC_STORE_ID,
         },
       });
 
@@ -91,7 +92,7 @@ const Login: React.FC = () => {
                 type="submit"
                 className="w-full flex justify-center items-center h-[40px] bg-slate-900 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               >
-                {loading ? <Spinner size={"3"}/> : "Login"}
+                {loading ? <Spinner size={"3"} /> : "Login"}
               </button>
             </div>
             <div className="mt-5 cursor-pointer">

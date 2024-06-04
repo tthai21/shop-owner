@@ -1,12 +1,12 @@
 declare interface Staff {
-  id: number;
+  id?: number |string;
   firstName: string;
   lastName: string;
-  nickName: string;
+  nickname: string;
   phone: string;
-  skillLevel: number;
+  skillLevel: number | string;
   dateOfBirth: string;
-  rate: number;
+  rate: number | string;
   workingDays: string;
-  active: boolean;
+  isActive: boolean;
 }
