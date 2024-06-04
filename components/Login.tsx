@@ -22,7 +22,7 @@ const Login: React.FC = () => {
       const response = await axios.post("/auth/authenticate", payload, {
         headers: {
           "Content-Type": "application/json",
-          "X-StoreID": process.env.NEXT_PUBLIC_STORE_ID,
+          "X-StoreID": process.env.NEXT_PUBLIC_STORE_ID || process.env.STORE_ID,
         },
       });
 

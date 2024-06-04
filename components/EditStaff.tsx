@@ -29,7 +29,7 @@ const EditStaff: React.FC<EditStaffProps> = ({ staff ,onUpdate}) => {
       const response = await axios.post("/staff/", formData, {
         headers: {
           "Content-Type": "application/json",
-          "X-StoreID": process.env.NEXT_PUBLIC_STORE_ID,
+          "X-StoreID": process.env.NEXT_PUBLIC_STORE_ID || process.env.STORE_ID,
           Authorization: `Bearer ${getToken()}`,
         },
       });
