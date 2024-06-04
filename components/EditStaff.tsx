@@ -49,7 +49,7 @@ const EditStaff: React.FC<EditStaffProps> = ({ staff ,onUpdate}) => {
       <Dialog.Trigger asChild>
         <div
           key={staff.id}
-          className="sm:p-4 mb-10 bg-white border-2 rounded-lg shadow-md py-2 flex flex-col justify-center items-center w-[160px] sm:w-[200px] cursor-pointer mx-auto "
+          className={`sm:p-4 mb-10 bg-white border-2 rounded-lg shadow-md py-2 flex flex-col justify-between w-[160px] sm:w-[200px] mx-auto items-center  cursor-pointer ${!staff.isActive && "bg-slate-200" } `}
         >
           <div className="text-base xs:text-sm font-semibold flex flex-col justify-center gap-2 mb-2 items-center">
             <AccountCircleIcon />
