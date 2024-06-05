@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import SwitchActive from "./SwitchActive";
@@ -56,10 +56,19 @@ const CreateStaff: React.FC<AppProps> = ({ onUpdate }) => {
       console.error("Error submitting booking:", error);
     }
   };
+
+  useEffect(() => {
+    // Disable autofocus when the dialog opens
+    const firstFocusableElement = document.querySelector(
+      '[data-focusable="true"]'
+    ) as HTMLElement;
+    firstFocusableElement?.blur();
+  }, []);
+
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <div className="px-5 py-3 lg:p-4 mb-10 bg-white border-2 rounded-lg shadow-md font-bold  mx-5 flex flex-col justify-center items-center max-w-[200px]">
+        <div className="px-5 py-[9px] bg-white rounded-lg border-2 shadow-md font-bold mx-5 flex justify-center items-center">
           Add Staff
         </div>
       </Dialog.Trigger>
@@ -78,6 +87,7 @@ const CreateStaff: React.FC<AppProps> = ({ onUpdate }) => {
               fieldName="First Name"
               value={formData.firstName}
               onChange={handleChange}
+              data-focusable="true"
             />
             <StaffField
               htmlFor="lastName"
@@ -120,14 +130,12 @@ const CreateStaff: React.FC<AppProps> = ({ onUpdate }) => {
               onChange={handleSwitchChange}
             />
             <div className="mt-[25px] flex justify-end">
-              {/* <Dialog.Close asChild> */}
               <button
                 type="submit"
                 className="bg-blue-700 text-white hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-md px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
               >
                 Add Staff
               </button>
-              {/* </Dialog.Close> */}
             </div>
           </form>
           <Dialog.Close asChild>

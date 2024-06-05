@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import SwitchActive from "./SwitchActive";
@@ -43,13 +43,20 @@ const EditStaff: React.FC<EditStaffProps> = ({ staff ,onUpdate}) => {
       console.error("Error submitting booking:", error);
     }
   };
+  useEffect(() => {
+    // Disable autofocus when the dialog opens
+    const firstFocusableElement = document.querySelector(
+      '[data-focusable="true"]'
+    ) as HTMLElement;
+    firstFocusableElement?.blur();
+  }, []);
 
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
         <div
           key={staff.id}
-          className={`sm:p-4 mb-10 bg-white border-2 rounded-lg shadow-md py-2 flex flex-col justify-between w-[160px] sm:w-[200px] mx-auto items-center  cursor-pointer ${!staff.isActive && "bg-slate-200" } `}
+          className={`sm:p-4 mb-10 bg-white border-2 rounded-lg shadow-md py-2 flex flex-col justify-between w-[160px] sm:w-[200px] mx-auto items-center  cursor-pointer ${!staff.isActive && "bg-slate-300" } `}
         >
           <div className="text-base xs:text-sm font-semibold flex flex-col justify-center gap-2 mb-2 items-center">
             <AccountCircleIcon />

@@ -3,7 +3,8 @@ import axios from "@/ulti/axios";
 import Staff from "@/components/Staff";
 import CreateStaff from "@/components/CreateStaff";
 import EditStaff from "@/components/EditStaff";
-import CustomLoading from "@/components/CustomLoading";
+import CustomLoading from "@/components/Loading";
+import { Spinner } from "@radix-ui/themes";
 
 interface Staff {
   id: number;
@@ -75,11 +76,9 @@ const Staffs: React.FC = () => {
     <div className="mt-20 xl:w-[90%] 2xl:w-[80%] mx-auto">
       <div className="cursor-pointer flex justify-center items-center mb-4">
         <CreateStaff onUpdate={handleUpdate} />
-      </div>
-      <div className="flex justify-start items-center mb-4">
         <select
           onChange={handleFilterChange}
-          className="bg-white text-slate-900 px-4 py-2 rounded-md border"
+          className="bg-white text-slate-900 px-4 py-2 border-2 rounded-md focus:outline-none shadow-md font-bold"
           value={filter}
         >
           <option value="true" className="rounded-md">
@@ -87,9 +86,13 @@ const Staffs: React.FC = () => {
           </option>
           <option value="false">All Staff</option>
         </select>
-      </div>
-      {loading ? (
         <CustomLoading />
+      </div>
+      <div className="flex justify-center items-center mb-4"></div>
+      {loading ? (
+        <div className="flex justify-center items-center mt-[20%]">
+          <Spinner size={"3"} />
+        </div>
       ) : (
         <div className="grid 2xl:grid-cols-5 xl:grid-cols-4 md:grid-cols-3 grid-cols-2">
           {sortedStaffArray.map((staff) => (
