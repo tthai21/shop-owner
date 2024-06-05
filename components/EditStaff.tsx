@@ -11,7 +11,7 @@ interface EditStaffProps {
   onUpdate: () => void;
 }
 
-const EditStaff: React.FC<EditStaffProps> = ({ staff ,onUpdate}) => {
+const EditStaff: React.FC<EditStaffProps> = ({ staff, onUpdate }) => {
   const [formData, setFormData] = useState<Staff>({ ...staff });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +34,7 @@ const EditStaff: React.FC<EditStaffProps> = ({ staff ,onUpdate}) => {
         },
       });
       console.log(response.data);
-      onUpdate()
+      onUpdate();
 
       if (response.status !== 201) {
         throw new Error("Failed to submit booking.");
@@ -56,7 +56,9 @@ const EditStaff: React.FC<EditStaffProps> = ({ staff ,onUpdate}) => {
       <Dialog.Trigger asChild>
         <div
           key={staff.id}
-          className={`sm:p-4 mb-10 bg-white border-2 rounded-lg shadow-md py-2 flex flex-col justify-between w-[160px] sm:w-[200px] mx-auto items-center  cursor-pointer ${!staff.isActive && "bg-slate-300" } `}
+          className={`sm:p-4 mb-10 bg-white border-2 rounded-lg shadow-md py-2 flex flex-col justify-between w-[160px] sm:w-[200px] mx-auto items-center  cursor-pointer ${
+            !staff.isActive && "bg-slate-300"
+          } `}
         >
           <div className="text-base xs:text-sm font-semibold flex flex-col justify-center gap-2 mb-2 items-center">
             <AccountCircleIcon />
@@ -126,12 +128,12 @@ const EditStaff: React.FC<EditStaffProps> = ({ staff ,onUpdate}) => {
             />
             <div className="mt-[25px] flex justify-end">
               {/* <Dialog.Close asChild> */}
-                <button
-                  type="submit"
-                  className="bg-blue-700 text-white hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-md px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
-                >
-                  Save changes
-                </button>
+              <button
+                type="submit"
+                className="bg-blue-700 text-white hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-md px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
+              >
+                Save changes
+              </button>
               {/* </Dialog.Close> */}
             </div>
           </form>

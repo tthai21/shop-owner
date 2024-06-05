@@ -5,6 +5,7 @@ import CreateStaff from "@/components/CreateStaff";
 import EditStaff from "@/components/EditStaff";
 import CustomLoading from "@/components/Loading";
 import { Spinner } from "@radix-ui/themes";
+import SearchIcon from "@mui/icons-material/Search";
 
 interface Staff {
   id: number;
@@ -27,6 +28,8 @@ const Staffs: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [updateTrigger, setUpdateTrigger] = useState<boolean>(false);
   const [filter, setFilter] = useState<string>("true");
+  const [showSearch, setShowSearch] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const fetchStaffs = useCallback(async () => {
     setLoading(true);
@@ -61,8 +64,23 @@ const Staffs: React.FC = () => {
     setFilter(event.target.value);
   };
 
+  const handleSearchToggle = () => {
+    setShowSearch((prevShowSearch) => !prevShowSearch);
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
   const filteredStaffs = staffs.filter((staff) => {
-    if (filter === "true") return staff.isActive;
+    if (filter === "true" && !staff.isActive) return false;
+    if (
+      searchTerm &&
+      !`${staff.firstName} ${staff.lastName} ${staff.nickname}`
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
+    )
+      return false;
     return true;
   });
 
@@ -74,27 +92,59 @@ const Staffs: React.FC = () => {
 
   return (
     <div className="mt-20 xl:w-[90%] 2xl:w-[80%] mx-auto">
-      <div className="cursor-pointer flex justify-center items-center mb-4">
-        <CreateStaff onUpdate={handleUpdate} />
-        <select
-          onChange={handleFilterChange}
-          className="bg-white text-slate-900 px-4 py-2 border-2 rounded-md focus:outline-none shadow-md font-bold"
-          value={filter}
-        >
-          <option value="true" className="rounded-md">
-            Active Staff
-          </option>
-          <option value="false">All Staff</option>
-        </select>
-        <CustomLoading />
+      <div className="flex justify-center lg:justify-between items-center mb-4">
+        <div className="hidden lg:text-xl font-bold sm:mx-16 lg:flex items-end gap-x-2">
+          Team members
+          <div className="border-2 rounded-full flex justify-center items-end w-8 h-8 border-slate-950">
+            {sortedStaffArray.length}
+          </div>
+        </div>
+        <div className="flex items-center  sm:mx-14">
+          <div className="hidden sm:flex items-center mx-2 relative">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="px-5 pl-[9px] pr-[38px] bg-white rounded-lg border-2 shadow-md font-bold flex items-center h-[50px] focus:outline-none"
+              placeholder="Search staff"
+            />
+            <SearchIcon className="cursor-pointer absolute right-[10px]" />
+          </div>
+
+          <select
+            onChange={handleFilterChange}
+            className=" py-[9px] bg-white rounded-lg border-2 shadow-md font-bold flex items-center h-[50px]"
+            value={filter}
+          >
+            <option value="true" className="rounded-md">
+              Active Staffs
+            </option>
+            <option value="false">All Staffs</option>
+          </select>
+          <CreateStaff onUpdate={handleUpdate} />
+        </div>
       </div>
+
+      <div className="sm:hidden  flex items-center justify-center ">
+        <div className="flex relative  ">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="px-5 pl-[20px]  bg-white rounded-lg border-2 shadow-md font-bold flex items-center h-[50px] focus:outline-none mx-auto "
+            placeholder="Search staff"
+          />
+          <SearchIcon className="cursor-pointer absolute right-3 top-[25%]" />
+        </div>
+      </div>
+      <CustomLoading />
       <div className="flex justify-center items-center mb-4"></div>
       {loading ? (
         <div className="flex justify-center items-center mt-[20%]">
           <Spinner size={"3"} />
         </div>
       ) : (
-        <div className="grid 2xl:grid-cols-5 xl:grid-cols-4 md:grid-cols-3 grid-cols-2">
+        <div className="grid 2xl:grid-cols-5 xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4">
           {sortedStaffArray.map((staff) => (
             <EditStaff key={staff.id} staff={staff} onUpdate={handleUpdate} />
           ))}

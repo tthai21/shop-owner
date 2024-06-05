@@ -68,8 +68,8 @@ const CreateStaff: React.FC<AppProps> = ({ onUpdate }) => {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <div className="px-5 py-[9px] bg-white rounded-lg border-2 shadow-md font-bold mx-5 flex justify-center items-center">
-          Add Staff
+        <div className="px-5 py-[9px] bg-slate-900 text-white rounded-lg border-2 shadow-md font-bold mx-2 flex border-slate-900 items-center h-[50px]">
+          Add
         </div>
       </Dialog.Trigger>
       <Dialog.Portal>
