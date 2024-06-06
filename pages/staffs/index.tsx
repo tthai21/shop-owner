@@ -134,7 +134,6 @@ const Staffs: React.FC = () => {
           <Staff type="add" staff={emptyForm}  onUpdate={handleUpdate} />
         </div>
       </div>
-
       <div className="sm:hidden  flex items-center justify-center ">
         <div className="flex relative  ">
           <input

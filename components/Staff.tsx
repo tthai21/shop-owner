@@ -115,11 +115,10 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="bg-black opacity-50 data-[state=open]:animate-overlayShow fixed inset-0" />
-        <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+        <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[400px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
           <Dialog.Title className="text-slate-700 m-0 text-[17px] font-medium mb-5">
             Edit staff profile
           </Dialog.Title>
-
           <form onSubmit={handleSubmit}>
             <StaffField
               htmlFor="firstName"
@@ -155,7 +154,7 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
                     setFormData({ ...formData, dateOfBirth: date })
                   }
                   dateFormat="dd/MM/yyyy"
-                  className="h-[35px]  w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none"
+                  className="h-[35px]  w-full sm:w-[250px] flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none"
                 />
               </div>
             </div>
