@@ -26,7 +26,7 @@ const WorkingDayRadio: React.FC<WorkingDayRadioProps> = ({
     <div className="mb-[15px] flex gap-5">
       <label className="w-[80px]  text-right text-[15px]">Working Days</label>
       <div className="inline-flex flex-1">
-        <div className="flex flex-wrap justify-stretch gap-3 w-full ">
+        <div className="flex flex-wrap justify-stretch gap-3 sm:w-[250px] ">
           {[
             { label: "Mon", value: 1 },
             { label: "Tue", value: 2 },

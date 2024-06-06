@@ -146,7 +146,7 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
               onChange={handleChange}
             />
 
-            <div className="mb-[15px] flex flex-wrap items-center gap-5">
+            <div className="mb-[15px]  flex items-center gap-5">
               <label className=" w-[80px] text-right text-[15px]">D.O.B</label>
               <div className="inline-flex flex-1 w-full">
                 <DatePicker
@@ -155,7 +155,7 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
                     setFormData({ ...formData, dateOfBirth: date })
                   }
                   dateFormat="dd/MM/yyyy"
-                  className="inline-flex h-[35px] w-[150px] sm:w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none"
+                  className="h-[35px]  w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none"
                 />
               </div>
             </div>
