@@ -1,21 +1,19 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "@/ulti/axios";
-import Staff from "@/components/Staff";
-import CreateStaff from "@/components/CreateStaff";
-import EditStaff from "@/components/EditStaff";
 import CustomLoading from "@/components/Loading";
 import { Spinner } from "@radix-ui/themes";
 import SearchIcon from "@mui/icons-material/Search";
+import Staff from "@/components/Staff";
 
 interface Staff {
-  id: number;
+  id: number | null;
   firstName: string;
   lastName: string;
   nickname: string;
   phone: string;
-  skillLevel: number;
+  skillLevel: number | null;
   dateOfBirth: string;
-  rate: number;
+  rate: number | null;
   workingDays: string;
   storeUuid: string;
   tenantUuid: string;
@@ -28,7 +26,6 @@ const Staffs: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [updateTrigger, setUpdateTrigger] = useState<boolean>(false);
   const [filter, setFilter] = useState<string>("true");
-  const [showSearch, setShowSearch] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   const fetchStaffs = useCallback(async () => {
@@ -64,9 +61,7 @@ const Staffs: React.FC = () => {
     setFilter(event.target.value);
   };
 
-  const handleSearchToggle = () => {
-    setShowSearch((prevShowSearch) => !prevShowSearch);
-  };
+
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -84,10 +79,25 @@ const Staffs: React.FC = () => {
     return true;
   });
 
-  const sortedStaffArray = filteredStaffs.sort((a, b) => a.id - b.id);
+  const sortedStaffArray = filteredStaffs.sort((a:any, b:any) => a.id - b.id);
 
   if (error) {
     return <div>Error fetching data: {error}</div>;
+  }
+
+  const emptyForm:Staff = {
+    id: null,
+    firstName: "",
+    lastName: "",
+    nickname: "",
+    phone: "",
+    skillLevel: 1,
+    dateOfBirth: "",
+    rate: null,
+    workingDays: "",
+    storeUuid: "",
+    tenantUuid: "",
+    isActive: true,
   }
 
   return (
@@ -113,7 +123,7 @@ const Staffs: React.FC = () => {
 
           <select
             onChange={handleFilterChange}
-            className=" py-[9px] bg-white rounded-lg border-2 shadow-md font-bold flex items-center h-[50px]"
+            className="cursor-pointer py-[9px] bg-white rounded-lg border-2 shadow-md font-bold flex items-center h-[50px]"
             value={filter}
           >
             <option value="true" className="rounded-md">
@@ -121,7 +131,7 @@ const Staffs: React.FC = () => {
             </option>
             <option value="false">All Staffs</option>
           </select>
-          <CreateStaff onUpdate={handleUpdate} />
+          <Staff type="add" staff={emptyForm}  onUpdate={handleUpdate} />
         </div>
       </div>
 
@@ -146,7 +156,7 @@ const Staffs: React.FC = () => {
       ) : (
         <div className="grid 2xl:grid-cols-5 xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4">
           {sortedStaffArray.map((staff) => (
-            <EditStaff key={staff.id} staff={staff} onUpdate={handleUpdate} />
+            <Staff type="edit" key={staff.id} staff={staff} onUpdate={handleUpdate} />
           ))}
         </div>
       )}

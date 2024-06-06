@@ -1,12 +1,14 @@
 declare interface Staff {
-  id?: number |string;
+  id: number | null;
   firstName: string;
   lastName: string;
   nickname: string;
   phone: string;
-  skillLevel: number | string;
+  skillLevel: number | null;
   dateOfBirth: string;
-  rate: number | string;
+  rate: number | null;
   workingDays: string;
+  storeUuid: string;
+  tenantUuid: string;
   isActive: boolean;
 }
