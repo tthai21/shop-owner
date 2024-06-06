@@ -97,7 +97,7 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
           {type === "edit" && (
             <div
               key={staff.id}
-              className={`sm:p-4 mb-10 bg-white border-2 rounded-lg shadow-md py-2 flex flex-col justify-between w-[160px] sm:w-[200px] mx-auto items-center cursor-pointer ${
+              className={`sm:p-4 mb-10  border-2 rounded-lg shadow-md py-2 flex flex-col justify-between w-[160px] sm:w-[200px] mx-auto items-center cursor-pointer ${
                 !staff.isActive && "bg-slate-300"
               }`}
             >
