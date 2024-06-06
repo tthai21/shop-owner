@@ -41,7 +41,7 @@ const WorkingDayRadio: React.FC<WorkingDayRadioProps> = ({
               className={`cursor-pointer border-2 flex items-center justify-center rounded-md h-7 w-10 ${
                 formData.workingDays.includes(day.value)
                   ? "text-white bg-blue-700 border-2 border-blue-700 font-bold"
-                  : "text-white bg-slate-500 border-2 border-slate-500 "
+                  : "text-white bg-slate-300 border-2 border-slate-300 "
               }`}
             >
               <input
