@@ -50,6 +50,16 @@ const MenubarDemo = () => {
           Profiles
         </Menubar.Trigger>
       </Menubar.Menu>
+      <Menubar.Menu>
+        <Menubar.Trigger
+          onClick={() => router.push("/")}
+          className={`py-2 px-3 outline-none select-none font-medium leading-none rounded text-slate-900 text-[13px] lg:text-base flex items-center justify-between gap-[2px] data-[highlighted]:bg-violet4 data-[state=open]:bg-violet4 hover:underline hover:underline-offset-4 ${
+            slug == "/profiles" && "underline underline-offset-4"
+          } `}
+        >
+          Logout
+        </Menubar.Trigger>
+      </Menubar.Menu>
     </Menubar.Root>
   );
 };

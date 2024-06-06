@@ -32,7 +32,7 @@ const SkillLevelRadio: React.FC<SkillLevelRadioProps> = ({
               key={level}
               className={`flex cursor-pointer  items-center justify-center border-2 rounded-md h-7 w-10 ${
                 formData.skillLevel == level
-                  ? "border-blue-700 text-blue-700 font-bold"
+                  ? "border-blue-700 bg-blue-700 font-bold text-white"
                   : "bg-slate-500 text-white border-2 border-slate-500"
               }`}
             >

@@ -40,7 +40,7 @@ const WorkingDayRadio: React.FC<WorkingDayRadioProps> = ({
               key={day.value}
               className={`cursor-pointer border-2 flex items-center justify-center rounded-md h-7 w-10 ${
                 formData.workingDays.includes(day.value)
-                  ? "bg-white text-blue-700 border-2 border-blue-700 font-bold"
+                  ? "text-white bg-blue-700 border-2 border-blue-700 font-bold"
                   : "text-white bg-slate-500 border-2 border-slate-500 "
               }`}
             >
