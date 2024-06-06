@@ -26,14 +26,14 @@ const SkillLevelRadio: React.FC<SkillLevelRadioProps> = ({
     <div className="mb-[15px] flex  gap-5">
       <label className=" w-[80px] text-right text-[15px]">Skill Level</label>
       <div className="inline-flex flex-1">
-        <div className="flex flex-wrap justify-stretch gap-3 w-full ">
+        <div className="flex flex-wrap justify-start gap-3 w-full ">
           {[1, 2, 3, 4, 5].map((level) => (
             <label
               key={level}
               className={`flex cursor-pointer  items-center justify-center border-2 rounded-md h-7 w-10 ${
                 formData.skillLevel == level
                   ? "border-blue-700 text-blue-700 font-bold"
-                  : "bg-white text-slate-700"
+                  : "bg-slate-500 text-white border-2 border-slate-500"
               }`}
             >
               <input

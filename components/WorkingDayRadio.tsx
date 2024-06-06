@@ -26,22 +26,22 @@ const WorkingDayRadio: React.FC<WorkingDayRadioProps> = ({
     <div className="mb-[15px] flex gap-5">
       <label className="w-[80px]  text-right text-[15px]">Working Days</label>
       <div className="inline-flex flex-1">
-        <div className="flex flex-wrap justify-stretch gap-3 sm:w-[250px] ">
+        <div className="flex flex-wrap justify-start gap-3 ">
           {[
-            { label: "Mon", value: 1 },
-            { label: "Tue", value: 2 },
-            { label: "Wed", value: 3 },
-            { label: "Thu", value: 4 },
-            { label: "Fri", value: 5 },
-            { label: "Sat", value: 6 },
-            { label: "Sun", value: 7 },
+            { label: "Mo", value: 1 },
+            { label: "Tu", value: 2 },
+            { label: "We", value: 3 },
+            { label: "Th", value: 4 },
+            { label: "Fr", value: 5 },
+            { label: "Sa", value: 6 },
+            { label: "Su", value: 7 },
           ].map((day) => (
             <label
               key={day.value}
-              className={`cursor-pointer flex items-center justify-center rounded-md h-7 w-10 ${
+              className={`cursor-pointer border-2 flex items-center justify-center rounded-md h-7 w-10 ${
                 formData.workingDays.includes(day.value)
                   ? "bg-white text-blue-700 border-2 border-blue-700 font-bold"
-                  : "text-black bg-gray-200"
+                  : "text-white bg-slate-500 border-2 border-slate-500 "
               }`}
             >
               <input
