@@ -7,7 +7,6 @@ import Staff from "@/components/Staff";
 import isTokenExpired from "@/helper/CheckTokenExpired";
 import { useRouter } from "next/router";
 import { getToken } from "@/helper/getToken";
-import { log } from "console";
 
 interface Staff {
   id: number | null;

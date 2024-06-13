@@ -8,7 +8,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
     <div className="lg:w-[80%] mx-auto mb-20">
-      {slug !== "/" && slug !== "/login" && slug !== "/session-expired" && <MenubarDemo />}
+      {slug !== "/" &&
+        slug !== "/login" &&
+        slug !== "/session-expired" &&
+        slug !== "/signup" && <MenubarDemo />}
       <main>{children}</main>
     </div>
   );

@@ -12,22 +12,12 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { createDateFromString } from "@/helper/DateFromString";
 import { formatDate } from "@/helper/FormatDate";
-import ReactInputMask from "react-input-mask";
 
 interface StaffProps {
   staff: Staff;
   type: "add" | "edit";
   onUpdate: () => void;
 }
-
-const CustomDateInput = (props: any) => (
-  <ReactInputMask
-    {...props}
-    mask="99/99/9999"
-    placeholder="dd/mm/yyyy"
-    className="h-[35px] w-full sm:w-[360px] flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none"
-  />
-);
 
 const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
   const [formData, setFormData] = useState<any>({
@@ -119,6 +109,17 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
     validateForm(formData);
   }, []);
 
+  const handleDateOfBirthChangeRaw = (e: any) => {
+    e.preventDefault();
+    const { value } = e.target;
+    const regex = /^([0-3][0-9])\/([0-1][0-9])\/([0-9]{4})$/;
+    if (!regex.test(value)) {
+      e.target.value = formData.dateOfBirth
+        ? formatDate(formData.dateOfBirth)
+        : "";
+    }
+  };
+
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
@@ -192,7 +193,9 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
                     setFormData({ ...formData, dateOfBirth: date })
                   }
                   dateFormat="dd/MM/yyyy"
-                  customInput={<CustomDateInput />}
+                  placeholderText="dd/mm/yyyy"
+                  onChangeRaw={(e) => handleDateOfBirthChangeRaw(e)}
+                  className="h-[35px] w-full sm:w-[360px] flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none"
                 />
               </div>
             </div>
