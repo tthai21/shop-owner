@@ -2,7 +2,7 @@ import React, { forwardRef, useEffect, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import SwitchActive from "./SwitchActive";
-import axios from "@/ulti/axios";
+import axios from "@/utils/axios";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { getToken } from "@/helper/getToken";
 import StaffField from "./StaffField";

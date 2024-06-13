@@ -1,9 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
-import axios from "@/ulti/axios";
+import axios from "@/utils/axios";
 import CustomLoading from "@/components/Loading";
 import { Spinner } from "@radix-ui/themes";
 import SearchIcon from "@mui/icons-material/Search";
 import Staff from "@/components/Staff";
+import isTokenExpired from "@/helper/CheckTokenExpired";
+import { useRouter } from "next/router";
+import { getToken } from "@/helper/getToken";
+import { log } from "console";
 
 interface Staff {
   id: number | null;
@@ -27,6 +31,22 @@ const Staffs: React.FC = () => {
   const [updateTrigger, setUpdateTrigger] = useState<boolean>(false);
   const [filter, setFilter] = useState<string>("true");
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const router = useRouter();
+
+  useEffect(() => {
+    if (sessionStorage.getItem("authToken")) {
+      const token = getToken();
+      console.log(token);
+      console.log(isTokenExpired(token));
+
+      if (isTokenExpired(token)) {
+        sessionStorage.removeItem("authToken");
+        router.push("/session-expired");
+      }
+    } else {
+      router.push("/session-expired");
+    }
+  }, [router]);
 
   const fetchStaffs = useCallback(async () => {
     setLoading(true);
@@ -61,8 +81,6 @@ const Staffs: React.FC = () => {
     setFilter(event.target.value);
   };
 
-
-
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
@@ -79,13 +97,13 @@ const Staffs: React.FC = () => {
     return true;
   });
 
-  const sortedStaffArray = filteredStaffs.sort((a:any, b:any) => a.id - b.id);
+  const sortedStaffArray = filteredStaffs.sort((a: any, b: any) => a.id - b.id);
 
   if (error) {
     return <div>Error fetching data: {error}</div>;
   }
 
-  const emptyForm:Staff = {
+  const emptyForm: Staff = {
     id: null,
     firstName: "",
     lastName: "",
@@ -98,7 +116,7 @@ const Staffs: React.FC = () => {
     storeUuid: "",
     tenantUuid: "",
     isActive: true,
-  }
+  };
 
   return (
     <div className="mt-20 xl:w-[90%] 2xl:w-[80%] mx-auto">
@@ -131,7 +149,7 @@ const Staffs: React.FC = () => {
             </option>
             <option value="false">All Staffs</option>
           </select>
-          <Staff type="add" staff={emptyForm}  onUpdate={handleUpdate} />
+          <Staff type="add" staff={emptyForm} onUpdate={handleUpdate} />
         </div>
       </div>
       <div className="sm:hidden  flex items-center justify-center ">
@@ -155,7 +173,12 @@ const Staffs: React.FC = () => {
       ) : (
         <div className="grid 2xl:grid-cols-5 xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4">
           {sortedStaffArray.map((staff) => (
-            <Staff type="edit" key={staff.id} staff={staff} onUpdate={handleUpdate} />
+            <Staff
+              type="edit"
+              key={staff.id}
+              staff={staff}
+              onUpdate={handleUpdate}
+            />
           ))}
         </div>
       )}

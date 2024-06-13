@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import ForgotPasswordDialog from "./ForgotPasswordDialog";
 import axios from "@/utils/axios";
 import { useRouter } from "next/router";
 import { Spinner } from "@radix-ui/themes";
+import ForgotPasswordDialog from "@/components/ForgotPasswordDialog";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("cosynails@gmail.com");
