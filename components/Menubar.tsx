@@ -5,10 +5,11 @@ import { useRouter } from "next/router";
 const MenubarDemo = () => {
   const router = useRouter();
   const slug = router.route;
-  const logoutHandler= () => {
-    router.push("/login");
+  const logoutHandler = () => {
+    router.push("/");
     sessionStorage.removeItem("authToken");
-  }
+    sessionStorage.removeItem("refreshToken");
+  };
   return (
     <Menubar.Root className="flex bg-white p-[3px] mt-5 w-[90%] sx:w-[70%] lg:w-[50%] mx-auto justify-center  rounded-md shadow-[0_2px_10px] shadow-blackA4">
       <Menubar.Menu>

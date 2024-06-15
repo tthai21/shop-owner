@@ -35,8 +35,6 @@ const Staffs: React.FC = () => {
   useEffect(() => {
     if (sessionStorage.getItem("authToken")) {
       const token = getToken();
-      console.log(token);
-      console.log(isTokenExpired(token));
 
       if (isTokenExpired(token)) {
         sessionStorage.removeItem("authToken");
@@ -109,8 +107,8 @@ const Staffs: React.FC = () => {
     nickname: "",
     phone: "",
     skillLevel: 1,
-    dateOfBirth: "",
-    rate: null,
+    dateOfBirth: "01/01/1990",
+    rate: 1,
     workingDays: "",
     storeUuid: "",
     tenantUuid: "",
@@ -126,7 +124,7 @@ const Staffs: React.FC = () => {
             {sortedStaffArray.length}
           </div>
         </div>
-        <div className="flex items-center  sm:mx-14">
+        <div className="flex items-center sm:mx-14">
           <div className="hidden sm:flex items-center mx-2 relative">
             <input
               type="text"
@@ -151,13 +149,13 @@ const Staffs: React.FC = () => {
           <Staff type="add" staff={emptyForm} onUpdate={handleUpdate} />
         </div>
       </div>
-      <div className="sm:hidden  flex items-center justify-center ">
-        <div className="flex relative  ">
+      <div className="sm:hidden flex items-center justify-center">
+        <div className="flex relative">
           <input
             type="text"
             value={searchTerm}
             onChange={handleSearchChange}
-            className="px-5 pl-[20px]  bg-white rounded-lg border-2 shadow-md font-bold flex items-center h-[50px] focus:outline-none mx-auto "
+            className="px-5 pl-[20px] bg-white rounded-lg border-2 shadow-md font-bold flex items-center h-[50px] focus:outline-none mx-auto"
             placeholder="Search staff"
           />
           <SearchIcon className="cursor-pointer absolute right-3 top-[25%]" />

@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import SwitchActive from "./SwitchActive";
@@ -12,6 +12,19 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { createDateFromString } from "@/helper/DateFromString";
 import { formatDate } from "@/helper/FormatDate";
+import { useForm, Controller } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import CustomLoading from "./Loading";
+
+type FormData = {
+  firstName: string;
+  lastName: string;
+  nickname: string;
+  phone: string;
+  dateOfBirth: Date;
+  isActive: boolean;
+};
 
 interface StaffProps {
   staff: Staff;
@@ -19,7 +32,59 @@ interface StaffProps {
   onUpdate: () => void;
 }
 
+const schemaValidation = yup.object({
+  firstName: yup
+    .string()
+    .required("Please enter first name")
+    .max(10, "First name must be less than 10 characters"),
+  lastName: yup
+    .string()
+    .required("Please enter last name")
+    .max(10, "Last name must be less than 10 characters"),
+  nickname: yup
+    .string()
+    .required("Please enter nick name")
+    .max(10, "Nick name must be less than 10 characters"),
+  phone: yup
+    .string()
+    .required("Please enter phone number")
+    .matches(/^04\d{8}$/, "Phone number must be in the format 04xxxxxxxx"),
+  dateOfBirth: yup
+    .date()
+    .required("Please enter date of birth")
+    .typeError("Date of Birth must be in the format dd/mm/yyyy")
+    .max(new Date(), "Please enter valid date of birth")
+    .min(
+      new Date(
+        new Date().getFullYear() - 100,
+        new Date().getMonth(),
+        new Date().getDate()
+      ),
+      "Date of Birth must be at least 100 years ago"
+    ),
+  isActive: yup.boolean().required(),
+});
+
 const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
+  const [day, month, year] = staff.dateOfBirth.split("/");
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors, isValid, isSubmitting },
+  } = useForm<FormData>({
+    resolver: yupResolver(schemaValidation),
+    mode: "onChange",
+    defaultValues: {
+      isActive: staff.isActive,
+      firstName: staff.firstName,
+      lastName: staff.lastName,
+      nickname: staff.nickname,
+      phone: staff.phone,
+      dateOfBirth: new Date(`${year}-${month}-${day}`),
+    },
+  });
+
   const [formData, setFormData] = useState<any>({
     ...staff,
     workingDays: staff.workingDays.split(",").map((day) => parseInt(day, 10)),
@@ -27,30 +92,10 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
   });
 
   const [open, setOpen] = useState(false);
-  const [phoneError, setPhoneError] = useState<boolean>(false);
-  const [isFormValid, setIsFormValid] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    if (name === "phone") {
-      const phoneRegex = /^\d*$/; // Allow only numbers
-
-      if (!phoneRegex.test(value)) {
-        setPhoneError(true);
-        return;
-      }
-
-      setPhoneError(false);
-    }
-
-    setFormData({ ...formData, [name]: value });
-    validateForm({ ...formData, [name]: value });
-  };
 
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: parseInt(value, 10) });
-    validateForm({ ...formData, [name]: parseInt(value, 10) });
   };
 
   const handleWorkingDaysChange = (day: number) => {
@@ -58,18 +103,13 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
       ? formData.workingDays.filter((d: number) => d !== day)
       : [...formData.workingDays, day];
     setFormData({ ...formData, workingDays: newWorkingDays });
-    validateForm({ ...formData, workingDays: newWorkingDays });
   };
 
-  const handleSwitchChange = (isActive: boolean) => {
-    setFormData({ ...formData, isActive });
-    validateForm({ ...formData, isActive });
-  };
-
-  const handleSubmit = async () => {
+  const onSubmitHandler = async (values: any) => {
     const payload = {
       ...formData,
-      dateOfBirth: formatDate(formData.dateOfBirth),
+      ...values,
+      dateOfBirth: formatDate(values.dateOfBirth),
       workingDays: formData.workingDays.join(","),
     };
 
@@ -83,6 +123,7 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
       });
       console.log(response.data);
       onUpdate();
+      setOpen(false);
 
       if (response.status !== 201) {
         throw new Error("Failed to submit booking.");
@@ -91,35 +132,6 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
       console.error("Error submitting booking:", error);
     }
   };
-
-  const validateForm = (data: any) => {
-    const isValid =
-      data.firstName &&
-      data.lastName &&
-      data.nickname &&
-      data.phone &&
-      !phoneError &&
-      data.dateOfBirth &&
-      data.workingDays.length > 0 &&
-      typeof data.isActive === "boolean";
-    setIsFormValid(isValid);
-  };
-
-  useEffect(() => {
-    validateForm(formData);
-  }, []);
-
-  const handleDateOfBirthChangeRaw = (e: any) => {
-    e.preventDefault();
-    const { value } = e.target;
-    const regex = /^([0-3][0-9])\/([0-1][0-9])\/([0-9]{4})$/;
-    if (!regex.test(value)) {
-      e.target.value = formData.dateOfBirth
-        ? formatDate(formData.dateOfBirth)
-        : "";
-    }
-  };
-
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
@@ -132,7 +144,7 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
           {type === "edit" && (
             <div
               key={staff.id}
-              className={`sm:p-4 mb-10  border-2 rounded-lg shadow-md py-2 flex flex-col justify-between w-[160px] sm:w-[200px] mx-auto items-center cursor-pointer ${
+              className={`sm:p-4 mb-10 border-2 rounded-lg shadow-md py-2 flex flex-col justify-between w-[160px] sm:w-[200px] mx-auto items-center cursor-pointer ${
                 !staff.isActive && "bg-slate-300"
               }`}
             >
@@ -154,51 +166,75 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
           <Dialog.Title className="text-slate-700 m-0 text-[17px] font-medium mb-5">
             Edit staff profile
           </Dialog.Title>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmitHandler)}>
             <StaffField
-              htmlFor="firstName"
+              name="firstName"
+              register={register}
               fieldName="First Name"
               value={formData.firstName}
-              onChange={handleChange}
             />
+            {errors.firstName && (
+              <div className="ml-[100px] text-red-500 -mt-3 mb-2">
+                {errors.firstName.message}
+              </div>
+            )}
             <StaffField
-              htmlFor="lastName"
+              register={register}
+              name="lastName"
               fieldName="Last Name"
               value={formData.lastName}
-              onChange={handleChange}
             />
+            {errors.lastName && (
+              <div className="ml-[100px] text-red-500 -mt-3 mb-2">
+                {errors.lastName.message}
+              </div>
+            )}
+
             <StaffField
-              htmlFor="nickname"
+              register={register}
+              name="nickname"
               fieldName="Nick Name"
               value={formData.nickname}
-              onChange={handleChange}
             />
+            {errors.nickname && (
+              <div className="ml-[100px] text-red-500 -mt-3 mb-2">
+                {errors.nickname.message}
+              </div>
+            )}
             <StaffField
-              htmlFor="phone"
+              register={register}
+              name="phone"
               fieldName="Phone"
               value={formData.phone}
-              onChange={handleChange}
             />
-            {phoneError && (
+            {errors.phone && (
               <div className="ml-[100px] text-red-500 -mt-3 mb-2">
-                Phone number must contain only numbers.
+                {errors.phone.message}
               </div>
             )}
             <div className="mb-[15px] flex items-center gap-5">
               <label className=" w-[80px] text-right text-[15px]">D.O.B</label>
               <div className="inline-flex flex-1 w-full">
-                <DatePicker
-                  selected={formData.dateOfBirth}
-                  onChange={(date) =>
-                    setFormData({ ...formData, dateOfBirth: date })
-                  }
-                  dateFormat="dd/MM/yyyy"
-                  placeholderText="dd/mm/yyyy"
-                  onChangeRaw={(e) => handleDateOfBirthChangeRaw(e)}
-                  className="h-[35px] w-full sm:w-[360px] flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none"
+                <Controller
+                  control={control}
+                  name="dateOfBirth"
+                  render={({ field }) => (
+                    <DatePicker
+                      selected={field.value}
+                      onChange={(date) => field.onChange(date)}
+                      dateFormat="dd/MM/yyyy"
+                      placeholderText="dd/mm/yyyy"
+                      className="h-[35px] w-full sm:w-[360px] flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none"
+                    />
+                  )}
                 />
               </div>
             </div>
+            {errors.dateOfBirth && (
+              <div className="ml-[100px] text-red-500 -mt-3 mb-2">
+                {errors.dateOfBirth.message}
+              </div>
+            )}
             <SkillLevelRadio
               formData={formData}
               handleRadioChange={handleRadioChange}
@@ -207,26 +243,38 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
               formData={formData}
               handleWorkingDaysChange={handleWorkingDaysChange}
             />
-            <SwitchActive
-              active={formData.isActive}
-              onChange={handleSwitchChange}
+            <Controller
+              control={control}
+              name="isActive" // Use the field name that corresponds to the SwitchActive component
+              render={({ field }) => (
+                <SwitchActive
+                  active={field.value}
+                  onChange={(value) => field.onChange(value)}
+                />
+              )}
             />
             <div className="mt-[25px] flex justify-end">
               <Dialog.Close asChild>
                 <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleSubmit();
-                    setOpen(false);
-                  }}
-                  className={` hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-md px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none ${
-                    !isFormValid || phoneError
-                      ? "bg-slate-400 text-white"
-                      : "bg-blue-700 text-white"
-                  }`}
-                  disabled={!isFormValid || phoneError}
+                  type="submit"
+                  onClick={handleSubmit(onSubmitHandler)}
+                  className={` hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] w-[130px] items-center justify-center rounded-md px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none                                         
+                     ${
+                       !isValid
+                         ? "bg-slate-500 text-white"
+                         : "bg-blue-700 text-white"
+                     }  
+                  `}
+                  disabled={!isValid}
                 >
-                  {type === "add" && "Add"} {type === "edit" && "Save changes"}
+                  {isSubmitting ? (
+                    <CustomLoading />
+                  ) : (
+                    <p>
+                      {type == "add" && "Add"}{" "}
+                      {type === "edit" && "Save changes"}
+                    </p>
+                  )}
                 </button>
               </Dialog.Close>
             </div>

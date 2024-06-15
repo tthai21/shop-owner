@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "@/utils/axios";
 import { useRouter } from "next/router";
 import { Spinner } from "@radix-ui/themes";
-import ForgotPasswordDialog from "@/components/ForgotPasswordDialog";
 
 const SignUp: React.FC = () => {
   const [firstName, setFirstName] = useState<string>("");
@@ -23,7 +22,7 @@ const SignUp: React.FC = () => {
     };
     setLoading(true);
     try {
-      const response = await axios.post("/auth/authenticate", payload, {
+      const response = await axios.post("/auth/register", payload, {
         headers: {
           "Content-Type": "application/json",
           "X-StoreID": process.env.NEXT_PUBLIC_STORE_ID || process.env.STORE_ID,
@@ -31,10 +30,9 @@ const SignUp: React.FC = () => {
       });
 
       if (response.status === 200) {
-        const token = response.data.token;
-        sessionStorage.setItem("authToken", token);
-        console.log("Token saved to session storage:", token);
-        router.push("/staffs");
+        console.log(response.data);
+
+        // router.push("/");
         setFirstName("");
         setLastName("");
         setEmail("");
@@ -138,14 +136,11 @@ const SignUp: React.FC = () => {
                 {loading ? <Spinner size={"3"} /> : "Sign Up"}
               </button>
             </div>
-            {/* <div className="mt-5 cursor-pointer">
-              <ForgotPasswordDialog />
-            </div> */}
           </form>
         </div>
         <div className="flex flex-col items-center justify-between mt-4 ">
           <div className="mt-4">Or</div>
-          <button 
+          <button
             onClick={() => router.push("/")}
             className="mt-4 w-full flex justify-center items-center h-[40px] bg-slate-900 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
