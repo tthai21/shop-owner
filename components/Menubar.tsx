@@ -27,7 +27,7 @@ const MenubarDemo = () => {
     { label: "Logout", path: "", onClick: logoutHandler },
   ];
   return (
-    <div className="mb-[100px]">
+    <div className="mb-[500px]">
       <div className="flex justify-between items-center relative font-bold text-lg z-10 ">
         <div
           className={` mx-5 md:hidden ${
@@ -45,7 +45,7 @@ const MenubarDemo = () => {
                   }
                   setIsOpen(false);
                 }}
-                className={`py-2 px-3 outline-none select-none font-bold leading-none rounded text-slate-900 text-[15px] lg:text-base flex items-center justify-between gap-[4px] data-[highlighted]:bg-violet4  hover:underline hover:underline-offset-4 ${
+                className={`py-2 px-3 outline-none select-none font-bold leading-none rounded text-slate-900 text-[15px] lg:text-base flex items-center justify-between gap-[4px]   hover:underline  ${
                   slug == menuItem.path && "underline underline-offset-4"
                 } `}
               >
