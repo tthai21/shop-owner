@@ -7,12 +7,12 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const slug = router.route;
 
   return (
-    <div className="lg:w-[80%] mx-auto mb-20">
+    <div className="lg:w-[80%] mx-auto">
       {slug !== "/" &&
         slug !== "/login" &&
         slug !== "/session-expired" &&
         slug !== "/signup" && <MenubarDemo />}
-      <main>{children}</main>
+      <main className="mt-20">{children}</main>
     </div>
   );
 };
