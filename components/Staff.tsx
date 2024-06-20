@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import SwitchActive from "./SwitchActive";
-import axios from "@/utils/axios";
+import { axiosWithToken } from "@/utils/axios";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { getToken } from "@/helper/getToken";
 import StaffField from "./StaffField";
@@ -17,6 +17,9 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import CustomLoading from "./Loading";
 import NumericInput from "./NumericInput";
+import isTokenExpired from "@/helper/CheckTokenExpired";
+import { refreshToken } from "@/helper/RefreshToken";
+import { useRouter } from "next/router";
 
 type FormData = {
   firstName: string;
@@ -106,6 +109,7 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
     setFormData({ ...formData, workingDays: newWorkingDays });
   };
 
+  const router = useRouter();
   const onSubmitHandler = async (values: any) => {
     const payload = {
       ...formData,
@@ -113,15 +117,18 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
       dateOfBirth: formatDate(values.dateOfBirth),
       workingDays: formData.workingDays.join(","),
     };
+    if (sessionStorage.getItem("authToken")) {
+      const token = getToken();
+
+      if (isTokenExpired(token)) {
+        refreshToken();
+      }
+    } else {
+      router.push("/session-expired");
+    }
 
     try {
-      const response = await axios.post("/staff/", payload, {
-        headers: {
-          "Content-Type": "application/json",
-          "X-StoreID": process.env.NEXT_PUBLIC_STORE_ID || process.env.STORE_ID,
-          Authorization: `Bearer ${getToken()}`,
-        },
-      });
+      const response = await axiosWithToken.post("/staff/", payload);
       console.log(response.data);
       onUpdate();
       setOpen(false);
@@ -221,12 +228,14 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
                   name="dateOfBirth"
                   render={({ field }) => (
                     <DatePicker
-                    selected={field.value}
-                    onChange={(date) => field.onChange(date)}
-                    dateFormat="dd/MM/yyyy"
-                    placeholderText="dd/mm/yyyy"
-                    customInput={<NumericInput className="h-[35px] w-full sm:w-[360px] flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none" />}
-                  />
+                      selected={field.value}
+                      onChange={(date) => field.onChange(date)}
+                      dateFormat="dd/MM/yyyy"
+                      placeholderText="dd/mm/yyyy"
+                      customInput={
+                        <NumericInput className="h-[35px] w-full sm:w-[360px] flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none" />
+                      }
+                    />
                   )}
                 />
               </div>
@@ -246,7 +255,7 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
             />
             <Controller
               control={control}
-              name="isActive" 
+              name="isActive"
               render={({ field }) => (
                 <SwitchActive
                   active={field.value}

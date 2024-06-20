@@ -6,7 +6,8 @@ import Staff from "@/components/Staff";
 import isTokenExpired from "@/helper/CheckTokenExpired";
 import { useRouter } from "next/router";
 import { getToken } from "@/helper/getToken";
-import axiosInstance from "@/utils/axios";
+import {axiosInstance} from "@/utils/axios";
+import { refreshToken } from "@/helper/RefreshToken";
 
 interface Staff {
   id: number | null;
@@ -37,8 +38,7 @@ const Staffs: React.FC = () => {
       const token = getToken();
 
       if (isTokenExpired(token)) {
-        sessionStorage.removeItem("authToken");
-        router.push("/session-expired");
+        refreshToken()
       }
     } else {
       router.push("/session-expired");

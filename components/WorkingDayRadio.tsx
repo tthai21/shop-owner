@@ -38,7 +38,7 @@ const WorkingDayRadio: React.FC<WorkingDayRadioProps> = ({
           ].map((day) => (
             <label
               key={day.value}
-              className={`cursor-pointer border-2 flex  rounded-md h-7 w-10 ${
+              className={`cursor-pointer border-2 flex justify-center  rounded-md h-7 w-10  ${
                 formData.workingDays.includes(day.value)
                   ? "text-white bg-blue-700 border-2 border-blue-700 font-bold"
                   : "text-white bg-slate-300 border-2 border-slate-300 "
@@ -52,7 +52,7 @@ const WorkingDayRadio: React.FC<WorkingDayRadioProps> = ({
                 onChange={() => handleWorkingDaysChange(day.value)}
                 className="appearance-none"
               />
-              <span>{day.label}</span>
+              <span className=" flex justify-center items-center">{day.label}</span>
             </label>
           ))}
         </div>

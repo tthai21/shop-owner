@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ForgotPasswordDialog from "./ForgotPasswordDialog";
 import { useRouter } from "next/router";
 import { Spinner } from "@radix-ui/themes";
-import axiosInstance from "@/utils/axios";
+import {axiosInstance} from "@/utils/axios";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("cosynails@gmail.com");

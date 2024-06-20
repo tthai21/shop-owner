@@ -42,9 +42,9 @@ const SkillLevelRadio: React.FC<SkillLevelRadioProps> = ({
                 value={level}
                 checked={formData.skillLevel === level}
                 onChange={handleRadioChange}
-                className="appearance-none"
+                className="appearance-none "
               />
-              <span>{level}</span>
+              <span className="flex justify-center items-center">{level}</span>
             </label>
           ))}
         </div>
