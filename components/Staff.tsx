@@ -16,6 +16,7 @@ import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import CustomLoading from "./Loading";
+import NumericInput from "./NumericInput";
 
 type FormData = {
   firstName: string;
@@ -220,12 +221,12 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
                   name="dateOfBirth"
                   render={({ field }) => (
                     <DatePicker
-                      selected={field.value}
-                      onChange={(date) => field.onChange(date)}
-                      dateFormat="dd/MM/yyyy"
-                      placeholderText="dd/mm/yyyy"
-                      className="h-[35px] w-full sm:w-[360px] flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none"
-                    />
+                    selected={field.value}
+                    onChange={(date) => field.onChange(date)}
+                    dateFormat="dd/MM/yyyy"
+                    placeholderText="dd/mm/yyyy"
+                    customInput={<NumericInput className="h-[35px] w-full sm:w-[360px] flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none" />}
+                  />
                   )}
                 />
               </div>
@@ -245,7 +246,7 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
             />
             <Controller
               control={control}
-              name="isActive" // Use the field name that corresponds to the SwitchActive component
+              name="isActive" 
               render={({ field }) => (
                 <SwitchActive
                   active={field.value}
@@ -258,7 +259,7 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
                 <button
                   type="submit"
                   onClick={handleSubmit(onSubmitHandler)}
-                  className={` hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] w-[130px] items-center justify-center rounded-md px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none                                         
+                  className={` hover:bg-blue-500 focus:shadow-blue-700 inline-flex h-[35px] w-[135px] items-center justify-center rounded-md px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none                                         
                      ${
                        !isValid
                          ? "bg-slate-500 text-white"

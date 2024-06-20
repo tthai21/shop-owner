@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import ForgotPasswordDialog from "./ForgotPasswordDialog";
-import axios from "@/utils/axios";
 import { useRouter } from "next/router";
 import { Spinner } from "@radix-ui/themes";
+import axiosInstance from "@/utils/axios";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("cosynails@gmail.com");
@@ -19,12 +19,7 @@ const Login: React.FC = () => {
     };
     setLoading(true);
     try {
-      const response = await axios.post("/auth/authenticate", payload, {
-        headers: {
-          "Content-Type": "application/json",
-          "X-StoreID": process.env.NEXT_PUBLIC_STORE_ID || process.env.STORE_ID,
-        },
-      });
+      const response = await axiosInstance.post("/auth/authenticate", payload);
 
       console.log(response.data);
       if (response.status === 200) {
@@ -32,7 +27,7 @@ const Login: React.FC = () => {
         const refreshToken = response.data.refreshToken;
         sessionStorage.setItem("authToken", token);
         sessionStorage.setItem("refreshToken", refreshToken);
-        router.push("/staffs");
+        router.push("/dashboard");
         setEmail("");
         setPassword("");
       } else {

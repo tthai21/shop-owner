@@ -35,7 +35,7 @@ const StaffField: React.FC<StaffFieldProps> = ({
   {...register(name)}
   name={name}
   defaultValue={value}
-  inputMode={name === "phone" ? "numeric" : undefined}
+  inputMode={name === "phone"  ? "numeric" : undefined}
   pattern={name === "phone" ? "^04\\d{8}$" : undefined}
   onInput={name === "phone" ? (e) => {
     const input = e.target as HTMLInputElement;

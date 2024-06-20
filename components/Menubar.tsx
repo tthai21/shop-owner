@@ -14,6 +14,16 @@ const MenubarDemo = () => {
     <Menubar.Root className="flex bg-white p-[3px] mt-5 w-[90%] sx:w-[70%] lg:w-[50%] mx-auto justify-center  rounded-md shadow-[0_2px_10px] shadow-blackA4">
       <Menubar.Menu>
         <Menubar.Trigger
+          onClick={() => router.push("/dashboard")}
+          className={`py-2 px-3 outline-none select-none font-medium leading-none rounded text-slate-900 text-[13px] lg:text-base flex items-center justify-between gap-[2px] data-[highlighted]:bg-violet4 data-[state=open]:bg-violet4 hover:underline hover:underline-offset-4 ${
+            slug == "/dashboard" && "underline underline-offset-4"
+          } `}
+        >
+          Dashboard
+        </Menubar.Trigger>
+      </Menubar.Menu>
+      <Menubar.Menu>
+        <Menubar.Trigger
           onClick={() => router.push("/staffs")}
           className={`py-2 px-3 outline-none select-none font-medium leading-none rounded text-slate-900 text-[13px] lg:text-base flex items-center justify-between gap-[2px] data-[highlighted]:bg-violet4 data-[state=open]:bg-violet4 hover:underline hover:underline-offset-4 ${
             slug == "/staffs" && "underline underline-offset-4"
