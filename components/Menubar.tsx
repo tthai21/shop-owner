@@ -27,7 +27,7 @@ const MenubarDemo = () => {
     { label: "Logout", path: "", onClick: logoutHandler },
   ];
   return (
-    <div className="mb-[100px]">
+    <div className="">
       <div className="flex justify-between items-center relative font-bold text-lg z-10 ">
         <div
           className={` mx-5 md:hidden ${
