@@ -2,7 +2,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 
 export const refreshToken = async () => {
-    const router= useRouter()
+  const router = useRouter();
   try {
     const response = await axios.post("/auth/refresh-token");
     const { authToken, refreshToken } = response.data;

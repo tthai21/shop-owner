@@ -12,7 +12,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         slug !== "/login" &&
         slug !== "/session-expired" &&
         slug !== "/signup" && <MenubarDemo />}
-      <main>{children}</main>
+      {children}
     </div>
   );
 };
