@@ -28,7 +28,7 @@ const MenubarDemo = () => {
   ];
   return (
     <>
-      <div className="flex justify-between items-center relative font-bold text-lg z-10 mb-10">
+      <div className="flex justify-between items-center relative font-bold text-lg z-10 mb-20">
         <div
           className={` mx-5 md:hidden ${
             isOpen ? "block" : "hidden"
