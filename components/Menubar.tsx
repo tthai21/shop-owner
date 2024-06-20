@@ -32,7 +32,7 @@ const MenubarDemo = () => {
         <div
           className={` mx-5 md:hidden ${
             isOpen ? "block" : "hidden"
-          } absolute top-[60px] left-0 right-0 bg-white shadow-md rounded-md`}
+          } bg-white shadow-md rounded-md`}
         >
           {menuItems.map((menuItem, index) => (
             <div key={index}>
@@ -54,7 +54,7 @@ const MenubarDemo = () => {
             </div>
           ))}
         </div>
-        <div className="absolute right-0 top-1 flex md:hidden bg-white p-[3px] mt-5 w-[10%] mx-4 justify-center rounded-md border-2">
+        <div className="flex md:hidden bg-white p-[3px] mt-5 w-[10%] mx-4 justify-center rounded-md border-2">
           <div className={`cursor-pointer`} onClick={toggleMenu}>
             <svg
               className="w-6 h-6"
@@ -81,6 +81,7 @@ const MenubarDemo = () => {
           </div>
         </div>
       </div>
+      
       {/* laptop */}
       <Menubar.Root className="hidden md:flex bg-white p-[3px] mt-5 w-[90%] sx:w-[70%] lg:w-[50%] mx-auto justify-center  rounded-md shadow-[0_2px_10px] shadow-blackA4">
         <Menubar.Menu>
