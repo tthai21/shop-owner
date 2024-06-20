@@ -1,6 +1,6 @@
 import React from "react";
 
 const Bookings = () => {
-  return <div className="mt-10">Bookings</div>;
+  return <div className="">Bookings</div>;
 };
 export default Bookings;

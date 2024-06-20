@@ -1,6 +1,6 @@
 import React from "react";
 
 const Profiles = () => {
-  return <div className="mt-10">Profiles</div>;
+  return <div className="">Profiles</div>;
 };
 export default Profiles;
