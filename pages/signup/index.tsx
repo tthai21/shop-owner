@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "@/utils/axios";
+import { axiosInstance } from "@/utils/axios";
 import { useRouter } from "next/router";
 import { Spinner } from "@radix-ui/themes";
 
@@ -22,12 +22,7 @@ const SignUp: React.FC = () => {
     };
     setLoading(true);
     try {
-      const response = await axios.post("/auth/register", payload, {
-        headers: {
-          "Content-Type": "application/json",
-          "X-StoreID": process.env.NEXT_PUBLIC_STORE_ID || process.env.STORE_ID,
-        },
-      });
+      const response = await axiosInstance.post("/auth/register", payload);
 
       if (response.status === 200) {
         console.log(response.data);
