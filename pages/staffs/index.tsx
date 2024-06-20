@@ -110,7 +110,7 @@ const Staffs: React.FC = () => {
   };
 
   return (
-    <div className="mt-20 xl:w-[90%] 2xl:w-[80%] mx-auto">
+    <div className="xl:w-[90%] 2xl:w-[80%] mx-auto">
       <div className="flex justify-center lg:justify-between items-center mb-4">
         <div className="hidden lg:text-xl font-bold sm:mx-16 lg:flex items-end gap-x-2">
           Team members
