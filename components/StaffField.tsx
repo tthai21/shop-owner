@@ -15,7 +15,6 @@ interface StaffFieldProps {
   value: any;
   fieldName: string;
   name: keyof FormData; 
-  // onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   register: UseFormRegister<FormData>;
 }
 
@@ -23,7 +22,6 @@ const StaffField: React.FC<StaffFieldProps> = ({
   value,
   fieldName,
   name,
-  // onChange,
   register,
 }) => {
   return (
@@ -32,13 +30,18 @@ const StaffField: React.FC<StaffFieldProps> = ({
         {fieldName}
       </label>
       <input
-        className="h-[35px] w-[150px] sm:w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none"
-        id={name}
-        {...register(name)}
-        name={name}
-        defaultValue={value}
-        // onChange={onChange}
-      />
+  className="h-[35px] w-[150px] sm:w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none"
+  id={name}
+  {...register(name)}
+  name={name}
+  defaultValue={value}
+  inputMode={name === "phone" ? "numeric" : undefined}
+  pattern={name === "phone" ? "^04\\d{8}$" : undefined}
+  onInput={name === "phone" ? (e) => {
+    const input = e.target as HTMLInputElement;
+    input.value = input.value.replace(/[^0-9]/g, '');
+  } : undefined}
+/>
     </fieldset>
   );
 };

@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback } from "react";
-import axios from "@/utils/axios";
 import CustomLoading from "@/components/Loading";
 import { Spinner } from "@radix-ui/themes";
 import SearchIcon from "@mui/icons-material/Search";
@@ -7,6 +6,7 @@ import Staff from "@/components/Staff";
 import isTokenExpired from "@/helper/CheckTokenExpired";
 import { useRouter } from "next/router";
 import { getToken } from "@/helper/getToken";
+import axiosInstance from "@/utils/axios";
 
 interface Staff {
   id: number | null;
@@ -48,14 +48,8 @@ const Staffs: React.FC = () => {
   const fetchStaffs = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await axios.get<Staff[]>(
-        `/staff/?isOnlyActive=${filter}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "X-StoreID": process.env.NEXT_PUBLIC_STORE_ID,
-          },
-        }
+      const response = await axiosInstance.get<Staff[]>(
+        `/staff/?isOnlyActive=false`
       );
       setStaffs(response.data);
       setError(null);
@@ -68,7 +62,7 @@ const Staffs: React.FC = () => {
 
   useEffect(() => {
     fetchStaffs();
-  }, [fetchStaffs, updateTrigger]);
+  }, [updateTrigger]);
 
   const handleUpdate = () => {
     setUpdateTrigger(!updateTrigger);
