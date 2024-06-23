@@ -83,7 +83,8 @@ const Login: React.FC = () => {
             <div className={`mb-4 text-red-700 ${!error && "hidden"} `}>
               Email or password invalid
             </div>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col items-center justify-between space-y-4">
+              <CustomGoogleLoginButton updateLoading={setLoading}/>
               <button
                 type="submit"
                 className="w-full flex justify-center items-center h-[40px] bg-slate-900 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -100,7 +101,6 @@ const Login: React.FC = () => {
         </div>
         <div className="flex flex-col items-center justify-between mt-4 ">
           <div className="mt-4">Or</div>
-          <CustomGoogleLoginButton  updateLoading={setLoading}/>
           <button
             onClick={() => router.push("/signup")}
             className=" mt-4 w-full flex justify-center items-center h-[40px] bg-slate-900 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

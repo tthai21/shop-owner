@@ -37,7 +37,7 @@ const CustomGoogleLoginButton: React.FC<CustomGoogleLoginButtonProps> = ({ updat
   };
 
   return (
-      <button className="gsi-material-button" onClick={() => {
+      <button className="gsi-material-button" style={{width: "400px"}} onClick={() => {
           updateLoading(true);
           googleLogin();
       }}>
