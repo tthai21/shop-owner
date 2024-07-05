@@ -3,6 +3,8 @@ import ForgotPasswordDialog from "./ForgotPasswordDialog";
 import { useRouter } from "next/router";
 import { Spinner } from "@radix-ui/themes";
 import {axiosInstance} from "@/utils/axios";
+import CustomGoogleLoginButton from "./CustomGoogleLoginButton";
+import useAuthResonse from "@/hooks/useAuthResponse";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("cosynails@gmail.com");
@@ -10,6 +12,7 @@ const Login: React.FC = () => {
   const [error, setError] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
+  const handleAuthResponse = useAuthResonse();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,11 +26,7 @@ const Login: React.FC = () => {
 
       console.log(response.data);
       if (response.status === 200) {
-        const token = response.data.token;
-        const refreshToken = response.data.refreshToken;
-        sessionStorage.setItem("authToken", token);
-        sessionStorage.setItem("refreshToken", refreshToken);
-        router.push("/dashboard");
+        handleAuthResponse(response.data.token, response.data.refreshToken)
         setEmail("");
         setPassword("");
       } else {
@@ -84,12 +83,15 @@ const Login: React.FC = () => {
             <div className={`mb-4 text-red-700 ${!error && "hidden"} `}>
               Email or password invalid
             </div>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col items-center justify-between space-y-4">
+              <CustomGoogleLoginButton updateLoading={setLoading}/>
               <button
                 type="submit"
                 className="w-full flex justify-center items-center h-[40px] bg-slate-900 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               >
-                {loading ? <Spinner size={"3"} /> : "Login"}
+                {loading ? <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                  <Spinner />
+                </div> : "Login"}
               </button>
             </div>
             <div className="mt-5 cursor-pointer">
