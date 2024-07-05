@@ -134,21 +134,17 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
       setOpen(false);
 
       if (response.status !== 201) {
-        throw new Error("Failed to submit booking.");
+        throw new Error("Failed to submit .");
       }
     } catch (error) {
-      console.error("Error submitting booking:", error);
+      console.error("Error submitting", error);
     }
   };
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
         <div>
-          {type === "add" && (
-            <div className="cursor-pointer px-5 py-[9px] bg-slate-900 text-white rounded-lg border-2 shadow-md font-bold mx-2 flex border-slate-900 items-center h-[50px]">
-              Add
-            </div>
-          )}
+          {type === "add" && <div className="btn-primary">Add</div>}
           {type === "edit" && (
             <div
               key={staff.id}
@@ -169,8 +165,8 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
         </div>
       </Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay className="bg-black opacity-50 data-[state=open]:animate-overlayShow fixed inset-0" />
-        <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[510px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+        <Dialog.Overlay className="overlay-dialog data-[state=open]:animate-overlayShow " />
+        <Dialog.Content className="data-[state=open]:animate-contentShow content-dialog">
           <Dialog.Title className="text-slate-700 m-0 text-[17px] font-medium mb-5">
             Edit staff profile
           </Dialog.Title>
@@ -291,7 +287,7 @@ const Staff: React.FC<StaffProps> = ({ staff, onUpdate, type }) => {
           </form>
           <Dialog.Close asChild>
             <button
-              className="text-violet11 hover:bg-violet4 focus:shadow-violet7 absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
+              className="absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
               aria-label="Close"
             >
               <Cross2Icon />
