@@ -47,7 +47,7 @@ const MenubarDemo = () => {
                     : router.push(menuItem.path);
                   setIsOpen(false);
                 }}
-                className={`py-2 px-3 outline-none select-none font-bold leading-none rounded text-slate-900 text-[15px] lg:text-base flex items-center justify-between gap-[4px] hover:underline ${
+                className={`py-2 mb-4 px-3 outline-none select-none font-bold leading-none rounded text-slate-900 text-[15px] lg:text-base flex items-center justify-between gap-[4px] hover:underline ${
                   slug == menuItem.path && "underline underline-offset-4"
                 }`}
               >
@@ -84,10 +84,11 @@ const MenubarDemo = () => {
         </div>
       </div>
       {/* Laptop and larger screens */}
-      <Menubar.Root className="hidden md:flex bg-white p-[3px] mt-5 w-[90%] sm:w-[70%] lg:w-[50%] mx-auto justify-center rounded-md shadow-[0_2px_10px] shadow-blackA4">
+      <div className="h-[1px]"></div>
+      <div className="hidden md:flex bg-white p-[3px] mt-5 w-[90%] sm:w-[70%] lg:w-[50%] mx-auto justify-center rounded-md shadow-[0_2px_10px] shadow-blackA4">
         {menuItems.map((menuItem, index) => (
-          <Menubar.Menu key={index}>
-            <Menubar.Trigger
+          <div key={index}>
+            <div
               onClick={() =>
                 menuItem.label === "Logout"
                   ? logoutHandler()
@@ -98,10 +99,10 @@ const MenubarDemo = () => {
               }`}
             >
               {menuItem.label}
-            </Menubar.Trigger>
-          </Menubar.Menu>
+            </div>
+          </div>
         ))}
-      </Menubar.Root>
+      </div>
     </div>
   );
 };

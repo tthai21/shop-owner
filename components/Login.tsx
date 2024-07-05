@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ForgotPasswordDialog from "./ForgotPasswordDialog";
 import { useRouter } from "next/router";
 import { Spinner } from "@radix-ui/themes";
-import {axiosInstance} from "@/utils/axios";
+import { axiosInstance } from "@/utils/axios";
 import CustomGoogleLoginButton from "./CustomGoogleLoginButton";
 import useAuthResonse from "@/hooks/useAuthResponse";
 
@@ -26,7 +26,7 @@ const Login: React.FC = () => {
 
       console.log(response.data);
       if (response.status === 200) {
-        handleAuthResponse(response.data.token, response.data.refreshToken)
+        handleAuthResponse(response.data.token, response.data.refreshToken);
         setEmail("");
         setPassword("");
       } else {
@@ -83,17 +83,24 @@ const Login: React.FC = () => {
             <div className={`mb-4 text-red-700 ${!error && "hidden"} `}>
               Email or password invalid
             </div>
-            <div className="flex flex-col items-center justify-between space-y-4">
-              <CustomGoogleLoginButton updateLoading={setLoading}/>
-              <button
-                type="submit"
-                className="w-full flex justify-center items-center h-[40px] bg-slate-900 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              >
-                {loading ? <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                  <Spinner />
-                </div> : "Login"}
-              </button>
+            <div className="mb-6 w-full">
+              <CustomGoogleLoginButton
+                updateLoading={setLoading}
+                className="py-2 px-3 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
             </div>
+            <button
+              type="submit"
+              className="w-full flex justify-center items-center h-[40px] bg-slate-900 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              {loading ? (
+                <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                  <Spinner />
+                </div>
+              ) : (
+                "Login"
+              )}
+            </button>
             <div className="mt-5 cursor-pointer">
               <ForgotPasswordDialog />
             </div>

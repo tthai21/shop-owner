@@ -5,9 +5,10 @@ import useAuthResonse from '@/hooks/useAuthResponse';
 
 interface CustomGoogleLoginButtonProps {
     updateLoading: (isLoading: boolean) => void;
+    className?: string; 
   }
 
-const CustomGoogleLoginButton: React.FC<CustomGoogleLoginButtonProps> = ({ updateLoading }) => {
+const CustomGoogleLoginButton: React.FC<CustomGoogleLoginButtonProps> = ({ updateLoading,className }) => {
 
     const handleAuthResponse = useAuthResonse();
 
@@ -37,7 +38,7 @@ const CustomGoogleLoginButton: React.FC<CustomGoogleLoginButtonProps> = ({ updat
   };
 
   return (
-      <button className="gsi-material-button" style={{width: "400px"}} onClick={() => {
+      <button className={`gsi-material-button ${className}`} style={{width: "100%"}} onClick={() => {
           updateLoading(true);
           googleLogin();
       }}>

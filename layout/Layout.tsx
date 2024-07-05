@@ -1,20 +1,22 @@
-import MenubarDemo from "@/components/Menubar";
-import { useRouter } from "next/router";
-import React from "react";
+// import MenubarDemo from "@/components/Menubar";
+// import { useRouter } from "next/router";
+// import React from "react";
 
-const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const router = useRouter();
-  const slug = router.route;
+// const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+//   const router = useRouter();
+//   const {path} = router;
+//   const noNav = ["/","/login","/session-expired","/signup"]
+//   const slug = router.route;
 
-  return (
-    <div className="lg:w-[80%] mx-auto">
-      {slug !== "/" &&
-        slug !== "/login" &&
-        slug !== "/session-expired" &&
-        slug !== "/signup" && <MenubarDemo />}
-      {children}
-    </div>
-  );
-};
+//   return (
+//     <div className="lg:w-[80%] mx-auto">
+//       {slug !== "/" &&
+//         slug !== "/login" &&
+//         slug !== "/session-expired" &&
+//         slug !== "/signup" && <MenubarDemo />}
+//       {children}
+//     </div>
+//   );
+// };
 
-export default Layout;
+// export default Layout;
