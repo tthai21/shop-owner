@@ -1,4 +1,5 @@
-import CategoryDialog from "@/components/CategoryDialog";
+import AddCategoryDialog from "@/components/AddCategoryDialog";
+import EditCategoryDialog from "@/components/EditCategoryDialog";
 import isTokenExpired from "@/helper/CheckTokenExpired";
 import { refreshToken } from "@/helper/RefreshToken";
 import { getToken } from "@/helper/getToken";
@@ -15,7 +16,11 @@ interface Service {
 interface Category {
   id: number;
   type: string;
-  services: Service[];
+  levelType: number;
+  description: string | null;
+  storeUuid: string;
+  active: boolean;
+  tenantUuid: string
 }
 
 const ServicesPage: React.FC = () => {
@@ -26,7 +31,7 @@ const ServicesPage: React.FC = () => {
   const [categoryName, setCategoryName] = useState<string>("");
   const [serviceName, setServiceName] = useState<string>("");
   const [serviceDescription, setServiceDescription] = useState<string>("");
-
+  const sortedCategories = categories.sort((a, b) => a.id - b.id);
   const router = useRouter();
 
   useEffect(() => {
@@ -45,6 +50,8 @@ const ServicesPage: React.FC = () => {
     setLoading(true);
     try {
       const response = await axiosWithToken.get<any[]>(`/serviceType/`);
+      console.log(response.data);
+
       setCategories(response.data);
       setError(null);
     } catch (error) {
@@ -58,104 +65,36 @@ const ServicesPage: React.FC = () => {
     fetchStaffs();
   }, []);
 
-  const handleAddCategory = () => {
-    const newCategory: Category = {
-      id: categories.length + 1,
-      type: categoryName,
-      services: [],
-    };
-    setCategories([...categories, newCategory]);
-    setCategoryName("");
-  };
 
-  const handleEditCategory = (id: number, name: string) => {
-    setCategories(
-      categories.map((category) =>
-        category.id === id ? { ...category, name } : category
-      )
-    );
-  };
 
-  const handleDeleteCategory = (id: number) => {
-    setCategories(categories.filter((category) => category.id !== id));
-  };
+
 
   const handleAddService = (categoryId: number) => {
-    setCategories(
-      categories.map((category) =>
-        category.id === categoryId
-          ? {
-              ...category,
-              services: [
-                ...category.services,
-                {
-                  id: category.services.length + 1,
-                  name: serviceName,
-                  description: serviceDescription,
-                },
-              ],
-            }
-          : category
-      )
-    );
-    setServiceName("");
-    setServiceDescription("");
+   
+
   };
 
-  const handleEditService = (
-    categoryId: number,
-    serviceId: number,
-    name: string,
-    description: string
-  ) => {
-    setCategories(
-      categories?.map((category) =>
-        category.id === categoryId
-          ? {
-              ...category,
-              services: category.services.map((service) =>
-                service.id === serviceId
-                  ? { ...service, name, description }
-                  : service
-              ),
-            }
-          : category
-      )
-    );
-  };
+ 
 
-  const handleDeleteService = (categoryId: number, serviceId: number) => {
-    setCategories(
-      categories?.map((category) =>
-        category.id === categoryId
-          ? {
-              ...category,
-              services: category.services.filter(
-                (service) => service.id !== serviceId
-              ),
-            }
-          : category
-      )
-    );
-  };
+
 
   return (
     <div className="p-4 md:w-[80%] mx-auto">
       <div className="mb-6 flex justify-between items-center">
         <h2 className="text-xl font-bold mb-2">Type</h2>
-        <CategoryDialog />
+        <AddCategoryDialog />
       </div>
 
-      {categories.map((category) => (
-        <div key={category.id} className="mb-6">
+      {sortedCategories?.map((category) => (
+        <div key={category.id} className="mb-6 border-b-2">
           <div className="flex justify-between items-center mb-2">
             <h3 className="text-lg font-bold">{category.type}</h3>
             <div>
-            <CategoryDialog edit={true}/>
+              <EditCategoryDialog category={category} />
             </div>
           </div>
 
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <h4 className="text-md font-bold mb-2">Add Service</h4>
             <input
               type="text"
@@ -177,46 +116,9 @@ const ServicesPage: React.FC = () => {
             >
               Add Service
             </button>
-          </div>
+          </div> */}
 
-          <div>
-            {category?.services?.map((service) => (
-              <div
-                key={service.id}
-                className="flex justify-between items-center mb-2"
-              >
-                <div>
-                  <div className="text-md font-bold">{service.name}</div>
-                  <div className="text-sm">{service.description}</div>
-                </div>
-                <div>
-                  <button
-                    onClick={() =>
-                      handleEditService(
-                        category.id,
-                        service.id,
-                        prompt("Enter new service name:", service.name) ||
-                          service.name,
-                        prompt(
-                          "Enter new service description:",
-                          service.description
-                        ) || service.description
-                      )
-                    }
-                    className="bg-yellow-500 text-white px-4 py-2 rounded mr-2"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDeleteService(category.id, service.id)}
-                    className="bg-red-500 text-white px-4 py-2 rounded"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+       
         </div>
       ))}
     </div>
